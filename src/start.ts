@@ -1,21 +1,33 @@
-import { Configuration, OpenAIApi } from "openai";
+#!/usr/local/bin/node
 import process from "process";
 import dotenv from "dotenv";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import { generate } from "./generator";
+
 dotenv.config();
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+yargs(hideBin(process.argv))
+  .options("type", { alias: "v", string: true })
+  .default("help", true)
+  .help();
 
-const openai = new OpenAIApi(configuration);
+const type = "Button";
 
-const response = await openai.createCompletion("text-davinci-002", {
-  prompt: "Are you alive?",
-  temperature: 0.7,
-  max_tokens: 300,
-  top_p: 1,
-  frequency_penalty: 0,
-  presence_penalty: 0,
-});
+const props = `
+- color (primary/secondary)`;
 
-console.log(response.data);
+const libraries = `
+- react
+- tailwindcss
+- clsx`;
+
+const prompt = `Create a TypeScript ${type} component with the following properties:${props}.
+
+Do all the styling with tailwind classes. Do not import any other local files. Do not use React Native. You can use the following libraries:${libraries}.
+
+// Code
+import React from 'react';
+`;
+
+// await generate(type, prompt);
