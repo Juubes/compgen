@@ -1,5 +1,8 @@
 import { OpenAIApi, Configuration } from "openai";
 import fs from "fs/promises";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const openai = new OpenAIApi(
   new Configuration({ apiKey: process.env.OPENAI_API_KEY })
@@ -39,4 +42,4 @@ const generate = async (type: string, prompt: string) => {
 
   return Promise.all([writeDataPromise, writeLogPromise]);
 };
-export { generate };
+export default generate;
