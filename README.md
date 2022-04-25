@@ -6,6 +6,8 @@ Install packages with
 
 > npm ci
 
+Add your OpenAI API key to an environment variable `OPENAI_API_KEY`.
+
 Run the program with
 
 > npm start -- help
