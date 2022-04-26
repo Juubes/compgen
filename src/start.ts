@@ -3,7 +3,6 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import generate from "./generator.js";
 
-
 const args = await yargs(hideBin(process.argv))
   .scriptName("compgen")
   .options("help", { alias: "h" })
@@ -44,7 +43,7 @@ const libraries = `
 - tailwindcss
 - clsx`;
 
-const prompt = `Create a TypeScript ${type} component with the following properties:${props}
+const prompt = `Create a TypeScript file with a functional ${type} component with the following properties:${props}
 
 Do all the styling with tailwind classes. Do not import any other local files. Do not use React Native.
 

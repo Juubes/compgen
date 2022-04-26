@@ -1,6 +1,8 @@
 import { OpenAIApi, Configuration } from "openai";
 import fs from "fs/promises";
 import dotenv from "dotenv";
+import { exit } from "process";
+import { number } from "yargs";
 
 dotenv.config();
 
@@ -9,13 +11,14 @@ const openai = new OpenAIApi(
 );
 
 const generate = async (type: string, prompt: string) => {
-  const response = await openai.createCompletion("text-davinci-002", {
+  const response = await openai.createCompletion("code-davinci-002", {
     prompt,
-    temperature: 0.3,
+    temperature: 0,
     max_tokens: 1000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
+    stop: ["// Usage"],
   });
 
   const { data, statusText } = response;
@@ -29,7 +32,9 @@ const generate = async (type: string, prompt: string) => {
   await fs.mkdir(`./data/${type}`, { recursive: true });
 
   const date = new Date();
-  const timestamp = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}-${date.getHours()}${date.getMinutes()}`;
+  const timestamp = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}-${date.getHours()}${addZero(
+    date.getMinutes()
+  )}`;
   const writeDataPromise = fs.writeFile(
     `./data/${type}/${type}-${timestamp}.tsx`,
     data.choices![0].text!
@@ -43,3 +48,8 @@ const generate = async (type: string, prompt: string) => {
   return Promise.all([writeDataPromise, writeLogPromise]);
 };
 export default generate;
+
+const addZero = (n: number) => {
+  if (n.toString().length == 1) return 0 + "" + n;
+  else return n;
+};
