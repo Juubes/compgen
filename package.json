@@ -3,6 +3,7 @@
   "author": "Juho Tapio",
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "prestart": "tsc",
     "start": "node ./out/start.js"
